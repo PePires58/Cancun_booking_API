@@ -21,11 +21,20 @@ namespace Cancun.Booking.Application.Services
         }
         #endregion
 
-        public bool CheckRoomAvailability(RoomAvailability roomAvailability)
+        public bool CheckRoomAvailability(ReservationOrder reservationOrder)
         {
-            if (ObjectIsValid(new RoomAvailabilityValidators(), roomAvailability))
+            if (ObjectIsValid(new ReservationOrderValidators(), reservationOrder))
             {
-                return IReservationRepository.CheckAvailability(roomAvailability);
+                return IReservationRepository.CheckAvailability(reservationOrder);
+            }
+            return false;
+        }
+
+        public bool CheckAvailabilityOnModifyingBooking(ReservationOrder reservationOrder)
+        {
+            if (ObjectIsValid(new ReservationOrderValidators(), reservationOrder))
+            {
+                return IReservationRepository.CheckAvailabilityOnModifyingBooking(reservationOrder);
             }
             return false;
         }

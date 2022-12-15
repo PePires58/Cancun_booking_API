@@ -9,8 +9,10 @@
             StartDate = startDate;
             EndDate = endDate;
             CustomerEmail = customerEmail;
+            Id = Guid.NewGuid();
         }
 
+        public Guid Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;

@@ -15,7 +15,7 @@ namespace Cancun.Booking.Tests
         INotificatorService INotificatorService { get; set; }
         IRoomAvailabilityService IRoomAvailabilityService { get; set; }
         Mock<IReservationRepository> IReservationRepository { get; set; }
-        static int RoomId => 1;
+        static string CustomerEmail => "customer@email.com";
         #endregion
 
         #region Constructor
@@ -39,8 +39,8 @@ namespace Cancun.Booking.Tests
         [TestMethod]
         public void ShouldHaveANotificationOfInvalidStartDate()
         {
-            RoomAvailability roomAvailability = new(DateTime.Now.AddDays(-1), DateTime.Now, RoomId);
-            IRoomAvailabilityService.CheckRoomAvailability(roomAvailability);
+            ReservationOrder reservationOrder = new(DateTime.Now.AddDays(-1), DateTime.Now, CustomerEmail);
+            IRoomAvailabilityService.CheckRoomAvailability(reservationOrder);
 
             Assert.IsTrue(INotificatorService.HasNotification);
             Assert.IsTrue(INotificatorService.Any(n => n.Message == "You cannot make a retroactive booking"));
@@ -49,7 +49,7 @@ namespace Cancun.Booking.Tests
         [TestMethod]
         public void ShouldHaveANotificationOfStartDateGraterThanEndDate()
         {
-            RoomAvailability reservationOrder = new(DateTime.Now.AddDays(1), DateTime.Now, RoomId);
+            ReservationOrder reservationOrder = new(DateTime.Now.AddDays(1), DateTime.Now, CustomerEmail);
             IRoomAvailabilityService.CheckRoomAvailability(reservationOrder);
 
             Assert.IsTrue(INotificatorService.HasNotification);
@@ -57,22 +57,12 @@ namespace Cancun.Booking.Tests
         }
 
         [TestMethod]
-        public void ShouldHaveANotificationOfRequiredRoom()
-        {
-            RoomAvailability reservationOrder = new(DateTime.Now.AddDays(1), DateTime.Now, 0);
-            IRoomAvailabilityService.CheckRoomAvailability(reservationOrder);
-
-            Assert.IsTrue(INotificatorService.HasNotification);
-            Assert.IsTrue(INotificatorService.Any(n => n.Message == "You must choose a room to make a booking"));
-        }
-
-        [TestMethod]
         public void ShouldReturnThatRoomIsNotAvailable() {
-            RoomAvailability roomAvailability = new(DateTime.Now, DateTime.Now.AddDays(2), RoomId);
-            IReservationRepository.Setup(c => c.CheckAvailability(roomAvailability))
+            ReservationOrder reservationOrder = new(DateTime.Now, DateTime.Now.AddDays(2), CustomerEmail);
+            IReservationRepository.Setup(c => c.CheckAvailability(reservationOrder))
                 .Returns(false);
 
-            bool available = IRoomAvailabilityService.CheckRoomAvailability(roomAvailability);
+            bool available = IRoomAvailabilityService.CheckRoomAvailability(reservationOrder);
 
             Assert.IsFalse(available);
             Assert.IsFalse(INotificatorService.HasNotification);
@@ -80,7 +70,7 @@ namespace Cancun.Booking.Tests
 
         [TestMethod]
         public void ShouldReturnThatRoomIsAvailable() {
-            RoomAvailability roomAvailability = new(DateTime.Now, DateTime.Now.AddDays(2), RoomId);
+            ReservationOrder roomAvailability = new(DateTime.Now, DateTime.Now.AddDays(2), CustomerEmail);
             IReservationRepository.Setup(c => c.CheckAvailability(roomAvailability))
                 .Returns(true);
 

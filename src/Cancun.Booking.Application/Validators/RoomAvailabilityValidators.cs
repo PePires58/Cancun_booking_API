@@ -3,7 +3,7 @@ using FluentValidation;
 
 namespace Cancun.Booking.Application.Validators
 {
-    public class RoomAvailabilityValidators : AbstractValidator<RoomAvailability>
+    public class RoomAvailabilityValidators : AbstractValidator<ReservationOrder>
     {
         public RoomAvailabilityValidators()
         {
