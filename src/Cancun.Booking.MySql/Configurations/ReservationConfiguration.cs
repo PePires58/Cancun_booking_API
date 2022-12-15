@@ -12,10 +12,6 @@ namespace Cancun.Booking.MySql.Configurations
         {
             builder.HasKey(x => x.Id);
 
-            builder.Property(c => c.Id)
-                .HasColumnType("VARCHAR(36)")
-                .HasConversion(v => v.ToString(), v => Guid.Parse(v));
-
             builder.Property(c => c.StartDate)
                 .HasColumnName("START_DATE");
 
@@ -23,13 +19,8 @@ namespace Cancun.Booking.MySql.Configurations
                 .HasColumnName("END_DATE");
 
             builder.Property(c => c.CustomerEmail)
-                .HasColumnType("VARCHAR(255)");
-
-            builder.Property(c => c.StayDays)
-                .IsRequired();
-
-            builder.Property(c => c.RoomId)
-                .IsRequired();
+                .HasColumnType("VARCHAR(255)")
+                .IsRequired(true);
         }
     }
 }

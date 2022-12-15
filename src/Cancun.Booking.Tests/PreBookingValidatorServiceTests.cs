@@ -22,6 +22,10 @@ namespace Cancun.Booking.Tests
         #region Constructor
         public PreBookingValidatorServiceTests()
         {
+            Environment.SetEnvironmentVariable("MINDAYSBOOKINGADVANCE", "1");
+            Environment.SetEnvironmentVariable("MAXSTAYDAYS", "3");
+            Environment.SetEnvironmentVariable("MAXDAYSBOOKINGADVANCE", "30");
+
             INotificatorService = new NotificatorService();
             IParameterService = new ParameterService();
             IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, IParameterService);
@@ -121,7 +125,15 @@ namespace Cancun.Booking.Tests
 
             Assert.IsTrue(INotificatorService.HasNotification);
             Assert.IsTrue(INotificatorService.Any(n => n.Message == $"Your reservation need to start with at least {Parameters.MinDaysBookingAdvance} days of advance"));
+        }
 
+        [TestMethod]
+        public void ShouldHaveNoNotifications()
+        {
+            ReservationOrder reservationOrder = new(DateTime.Now.AddDays(Parameters.MinDaysBookingAdvance), DateTime.Now.AddDays(Parameters.MinDaysBookingAdvance + Parameters.MaxStayDays), CustomerEmail);
+            IPreBookingValidatorService.ValidateReservationOrder(reservationOrder);
+
+            Assert.IsFalse(INotificatorService.HasNotification);
         }
     }
 }

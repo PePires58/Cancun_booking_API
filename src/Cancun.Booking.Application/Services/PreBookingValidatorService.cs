@@ -27,7 +27,7 @@ namespace Cancun.Booking.Application.Services
                 {
                     HandleNotification($"You cannot booking with {daysAdvance} days in advance, the maximum days of advance is {Parameters.MaxDaysBookingAdvance}");
                 }
-                else if (daysAdvance <= Parameters.MinDaysBookingAdvance)
+                else if (daysAdvance < Parameters.MinDaysBookingAdvance)
                 {
                     HandleNotification($"Your reservation need to start with at least {Parameters.MinDaysBookingAdvance} days of advance");
                 }
