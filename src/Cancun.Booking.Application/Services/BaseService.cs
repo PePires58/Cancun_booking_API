@@ -9,7 +9,7 @@ namespace Cancun.Booking.Application.Services
     public abstract class BaseService
     {
         #region Properties
-        INotificatorService INotificatorService { get; set; }
+        protected INotificatorService INotificatorService { get; set; }
         #endregion
 
         public BaseService(INotificatorService INotificatorService)
