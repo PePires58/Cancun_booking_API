@@ -15,5 +15,6 @@
         public DateTime EndDate { get; set; }
         public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
         public string CustomerEmail { get; set; }
+        public int RoomId { get { return 1; } } /*For porpuse tests, there is only one room*/
     }
 }

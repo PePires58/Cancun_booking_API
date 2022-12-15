@@ -15,6 +15,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cancun.Booking.Application", "Cancun.Booking.Application\Cancun.Booking.Application.csproj", "{32CDA3A8-346B-4F97-9853-5739B0DC4AC3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infra", "Infra", "{BD1DD796-F7F3-40F5-BBDA-876EC9E5C80F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cancun.Booking.MySql", "Cancun.Booking.MySql\Cancun.Booking.MySql.csproj", "{3F44945D-5D97-4201-B8A4-00F772B3257A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +37,10 @@ Global
 		{32CDA3A8-346B-4F97-9853-5739B0DC4AC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32CDA3A8-346B-4F97-9853-5739B0DC4AC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32CDA3A8-346B-4F97-9853-5739B0DC4AC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F44945D-5D97-4201-B8A4-00F772B3257A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F44945D-5D97-4201-B8A4-00F772B3257A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F44945D-5D97-4201-B8A4-00F772B3257A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F44945D-5D97-4201-B8A4-00F772B3257A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -41,6 +49,7 @@ Global
 		{65074739-0C43-4D0B-8BF5-06355A53149C} = {414DEC27-8FE3-4D39-8C25-3CD540913AAA}
 		{C2FA36B1-3AA5-4204-81D7-12B2DF7774E9} = {10673F36-AE98-4CFF-A9CA-561E02C21D00}
 		{32CDA3A8-346B-4F97-9853-5739B0DC4AC3} = {AC1D9458-C3C8-4398-8628-97D04BB262E0}
+		{3F44945D-5D97-4201-B8A4-00F772B3257A} = {BD1DD796-F7F3-40F5-BBDA-876EC9E5C80F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23BC0EBC-7CBB-4527-A574-548DC50470A6}

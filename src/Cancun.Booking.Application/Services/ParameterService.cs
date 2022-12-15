@@ -7,7 +7,9 @@ namespace Cancun.Booking.Application.Services
     {
         public Parameters GetParameters()
         {
-            return new Parameters(maxStayDays: 3, maxDaysBookingAdvance: 30, minDaysBookingAdvance: 1);
+            return new Parameters(maxStayDays: Convert.ToInt32(Environment.GetEnvironmentVariable("MAXSTAYDAYS")), 
+                maxDaysBookingAdvance: Convert.ToInt32(Environment.GetEnvironmentVariable("MAXDAYSBOOKINGADVANCE")), 
+                minDaysBookingAdvance: Convert.ToInt32(Environment.GetEnvironmentVariable("MINDAYSBOOKINGADVANCE")));
         }
     }
 }
