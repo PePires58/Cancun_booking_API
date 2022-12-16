@@ -22,7 +22,7 @@ namespace Cancun.Booking.Application.Validators
 
             RuleFor(c => c.CustomerEmail)
                 .NotEmpty().WithMessage("Customer email cannot be empty")
-                .NotNull().WithMessage("Customer email cannot by null")
+                .NotNull().WithMessage("Customer email cannot be null")
                 .Custom((email, context) =>
                 {
                     if (!MailAddress.TryCreate(email, out _))

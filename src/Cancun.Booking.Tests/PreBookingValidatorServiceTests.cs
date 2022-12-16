@@ -61,7 +61,7 @@ namespace Cancun.Booking.Tests
             IPreBookingValidatorService.ValidateReservationOrder(reservationOrder);
 
             Assert.IsTrue(INotificatorService.HasNotification);
-            Assert.IsTrue(INotificatorService.Any(n => n.Message == "Customer email cannot by null"));
+            Assert.IsTrue(INotificatorService.Any(n => n.Message == "Customer email cannot be null"));
         }
 
         [TestMethod]

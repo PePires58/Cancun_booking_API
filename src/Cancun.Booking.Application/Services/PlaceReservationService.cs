@@ -1,13 +1,7 @@
-﻿using Cancun.Booking.Application.Validators;
-using Cancun.Booking.Domain.Entities;
+﻿using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
 using Notification.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Cancun.Booking.Application.Services
 {
