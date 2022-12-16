@@ -108,13 +108,17 @@ namespace Cancun.Booking.Tests
         public void ShouldCancelTheReservation()
         {
             CancelReservationOrder cancelReservationOrder = new(CustomerEmail, 2);
+            ReservationOrder reservationOrder = new();
 
             IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId))
                 .Returns(true);
             IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
                         c.CustomerEmail == cancelReservationOrder.CustomerEmail))
                 .Returns(true);
-            IReservationRepository.Setup(c => c.Delete(cancelReservationOrder.ReservationId));
+            IReservationRepository.Setup(c => c.GetById(cancelReservationOrder.ReservationId))
+                .Returns(reservationOrder);
+            IReservationRepository.Setup(c => c.Update(reservationOrder));
+            IReservationRepository.Setup(c => c.Save());
 
             ICancelBookingService.CancelBooking(cancelReservationOrder);
 

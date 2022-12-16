@@ -1,5 +1,6 @@
 ﻿using Cancun.Booking.Application.Validators;
 using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
 using Notification.Domain.Interfaces;
@@ -31,7 +32,10 @@ namespace Cancun.Booking.Application.Services
                     if (IReservationRepository.Any(c => c.Id == cancelReservationOrder.ReservationId &&
                         c.CustomerEmail == cancelReservationOrder.CustomerEmail))
                     {
-                        IReservationRepository.Delete(cancelReservationOrder.ReservationId);
+                        ReservationOrder reservationOrderDb = IReservationRepository.GetById(cancelReservationOrder.ReservationId);
+                        reservationOrderDb.Status = ReservationOrderStatus.Canceled;
+                        IReservationRepository.Update(reservationOrderDb);
+                        IReservationRepository.Save();
                     }
                     else
                         HandleNotification("You cannot cancel this reservation because it's not belongs to you");

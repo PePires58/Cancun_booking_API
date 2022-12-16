@@ -1,4 +1,5 @@
 ﻿using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.MySql.Context;
 using System.Diagnostics.CodeAnalysis;
@@ -14,19 +15,13 @@ namespace Cancun.Booking.MySql.Repositories
 
         public bool CheckAvailability(ReservationOrder reservationOrder)
         {
-            return !Any(c =>
-                c.RoomId == reservationOrder.RoomId &&
-                BookingBetweenSomeDate(reservationOrder, c)
-                );
+            return !Any(c => DefaultCheckAvailabilityPredicate(reservationOrder, c));
         }
 
         public bool CheckAvailabilityOnModifyingBooking(ReservationOrder reservationOrder)
         {
-            return Any(c =>
-                c.RoomId == reservationOrder.RoomId &&
-                BookingBetweenSomeDate(reservationOrder, c) &&
-                c.CustomerEmail != reservationOrder.CustomerEmail
-                );
+            return !Any(c => DefaultCheckAvailabilityPredicate(reservationOrder, c) &&
+                c.CustomerEmail != reservationOrder.CustomerEmail);
         }
 
         #region Private methods
@@ -36,6 +31,14 @@ namespace Cancun.Booking.MySql.Repositories
                             (c.EndDate >= reservationOrder.StartDate && c.EndDate <= reservationOrder.EndDate) ||
                             (c.StartDate <= reservationOrder.StartDate && c.EndDate >= reservationOrder.EndDate) ||
                             (c.StartDate >= reservationOrder.StartDate && c.EndDate <= reservationOrder.EndDate);
+        }
+
+
+        private static bool DefaultCheckAvailabilityPredicate(ReservationOrder reservationOrder, ReservationOrder c)
+        {
+            return c.RoomId == reservationOrder.RoomId &&
+                            BookingBetweenSomeDate(reservationOrder, c) &&
+                            c.Status == ReservationOrderStatus.Reserved;
         }
         #endregion
     }

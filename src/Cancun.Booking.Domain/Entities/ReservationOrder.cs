@@ -1,4 +1,6 @@
-﻿namespace Cancun.Booking.Domain.Entities
+﻿using Cancun.Booking.Domain.Enums;
+
+namespace Cancun.Booking.Domain.Entities
 {
     public class ReservationOrder
     {
@@ -9,13 +11,16 @@
             StartDate = startDate;
             EndDate = endDate;
             CustomerEmail = customerEmail;
+            Status = ReservationOrderStatus.Reserved;
         }
 
         public int Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
         public string CustomerEmail { get; set; }
-        public int RoomId { get { return 1; } } /*For porpuse tests, there is only one room*/
+        public ReservationOrderStatus Status { get; set; }
+
+        public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
+        public int RoomId => 1; /*For porpuse tests, there is only one room*/
     }
 }

@@ -23,6 +23,8 @@ namespace Cancun.Booking.Domain.Interfaces.Repository
         T GetById(object id);
 
         void Insert(T obj);
+        
+        void Update(T obj);
 
         void Save();
     }

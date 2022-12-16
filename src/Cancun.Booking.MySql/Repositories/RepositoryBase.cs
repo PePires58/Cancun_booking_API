@@ -50,6 +50,8 @@ namespace Cancun.Booking.MySql.Repositories
 
         public void Insert(T obj) => Items.Add(obj);
 
+        public void Update(T obj) => Items.Update(obj);
+
         public void Save() => CancunDbContext.SaveChanges();
 
         public void Dispose() => CancunDbContext.Dispose();
