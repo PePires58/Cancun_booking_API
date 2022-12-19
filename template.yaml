@@ -1,0 +1,46 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Cancun Booking API Infrastructure template
+Parameters:
+  MaxStayDays:
+    Description: Max Stay days
+    Type: String
+  MaxDaysBookingAdvance:
+    Description: Max Days Booking Advance
+    Type: String
+  MinDaysBookingAdvance:
+    Description: Min Days Booking Advance
+    Type: String
+  StageName:
+    Description: Stage name
+    Type: String
+    Default: Prod
+
+Resources:
+  
+  CancunBookingApiGateway:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref StageName
+
+  PlaceReservationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Place Reservation Order
+      FunctionName: !Sub "Cancun-Booking-${StageName}-PlaceReservation-Fn"
+      Handler: "Cancun.Booking.PlaceReservation.Lambda::Cancun.Booking.PlaceReservation.Lambda.Function::FunctionHandler"
+      CodeUri: src/
+      Runtime: dotnet6
+      Timeout: 3
+      Events:
+        ReservationOrder:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CancunBookingApiGateway
+            Path: /ReservationOrder
+            Method: POST
+      Environment:
+        Variables:
+          MAXSTAYDAYS: !Ref MaxStayDays
+          MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
+          MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
