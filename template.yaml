@@ -31,13 +31,79 @@ Resources:
       Handler: "Cancun.Booking.PlaceReservation.Lambda::Cancun.Booking.PlaceReservation.Lambda.Function::FunctionHandler"
       CodeUri: src/
       Runtime: dotnet6
-      Timeout: 3
+      Timeout: 4
       Events:
         ReservationOrder:
           Type: Api
           Properties:
             RestApiId: !Ref CancunBookingApiGateway
             Path: /ReservationOrder
+            Method: POST
+      Environment:
+        Variables:
+          MAXSTAYDAYS: !Ref MaxStayDays
+          MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
+          MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
+
+  CancelReservationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Cancel Reservation Order
+      FunctionName: !Sub "Cancun-Booking-${StageName}-CancelReservation-Fn"
+      Handler: "Cancun.Booking.CancelReservation.Lambda::Cancun.Booking.CancelReservation.Lambda.Function::FunctionHandler"
+      CodeUri: src/
+      Runtime: dotnet6
+      Timeout: 4
+      Events:
+        CancelReservationOrder:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CancunBookingApiGateway
+            Path: /CancelReservationOrder
+            Method: POST
+      Environment:
+        Variables:
+          MAXSTAYDAYS: !Ref MaxStayDays
+          MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
+          MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
+    
+  ModifyReservationFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Modify Reservation Order
+      FunctionName: !Sub "Cancun-Booking-${StageName}-ModifyReservation-Fn"
+      Handler: "Cancun.Booking.ModifyReservation.Lambda::Cancun.Booking.ModifyReservation.Lambda.Function::FunctionHandler"
+      CodeUri: src/
+      Runtime: dotnet6
+      Timeout: 4
+      Events:
+        ModifyReservationOrder:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CancunBookingApiGateway
+            Path: /ModifyReservationOrder
+            Method: POST
+      Environment:
+        Variables:
+          MAXSTAYDAYS: !Ref MaxStayDays
+          MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
+          MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
+
+  CheckRoomAvailabilityFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Check Room Availability
+      FunctionName: !Sub "Cancun-Booking-${StageName}-ModifyReservation-Fn"
+      Handler: "Cancun.Booking.RoomAvailability.Lambda::Cancun.Booking.RoomAvailability.Lambda.Function::FunctionHandler"
+      CodeUri: src/
+      Runtime: dotnet6
+      Timeout: 4
+      Events:
+        CheckRoomAvailability:
+          Type: Api
+          Properties:
+            RestApiId: !Ref CancunBookingApiGateway
+            Path: /CheckRoomAvailability
             Method: POST
       Environment:
         Variables:
