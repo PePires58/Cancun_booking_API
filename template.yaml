@@ -170,28 +170,11 @@ Resources:
     Properties:
       GroupId: !Ref "CancunInstanceSecurityGroup"
       IpProtocol: "tcp"
-      FromPort: "0"
+      FromPort: "1433"
       ToPort: "1433"
       SourceSecurityGroupId: !Ref "CancunInstanceSecurityGroup"
 
   # DATABASE
-
-  CancunRDSCluster:
-    Type: "AWS::RDS::DBCluster"
-    Properties:
-      DBSubnetGroupName: !Ref "CancunRdsSubnetGroup"
-      MasterUsername: !Ref "DBUsername"
-      MasterUserPassword: !Ref "DBPassword"
-      DatabaseName: "cancun"
-      Engine: "mysql"
-      EngineMode: "serverless"
-      VpcSecurityGroupIds:
-      - !Ref "CancunInstanceSecurityGroup"
-      ScalingConfiguration:
-        AutoPause: true
-        MaxCapacity: 5
-        MinCapacity: 2
-        SecondsUntilAutoPause: 300
 
   CancunRdsSubnetGroup:
     Type: "AWS::RDS::DBSubnetGroup"
@@ -201,3 +184,16 @@ Resources:
       SubnetIds:
       - !Ref CancunSubNetPrivateA
       - !Ref CancunSubNetPrivateB
+  
+  CancunDb:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBInstanceIdentifier: !Ref DBInstanceID
+      DBName: CancunDb
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      Engine: mysql 
+      EngineVersion: "8.0.16"
+      LicenseModel: license-included
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
