@@ -188,7 +188,6 @@ Resources:
   CancunDb:
     Type: 'AWS::RDS::DBInstance'
     Properties:
-      DBInstanceIdentifier: !Ref DBInstanceID
       DBName: CancunDb
       DBInstanceClass: db.t3.micro
       AllocatedStorage: 20
