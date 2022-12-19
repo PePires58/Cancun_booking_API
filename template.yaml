@@ -188,11 +188,16 @@ Resources:
   CancunDb:
     Type: 'AWS::RDS::DBInstance'
     Properties:
+      DBInstanceIdentifier: cancundb
       DBName: CancunDb
-      DBInstanceClass: db.t3.micro
+      DBInstanceClass: db.t2.micro
+      StorageType: gp2
       AllocatedStorage: 20
+      MaxAllocatedStorage: 30
       Engine: mysql 
-      EngineVersion: "8.0.16"
+      EngineVersion: "8.0.28"
       LicenseModel: license-included
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
+      VPCSecurityGroups:
+        - !Ref CancunInstanceSecurityGroup
