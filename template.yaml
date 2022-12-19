@@ -179,7 +179,7 @@ Resources:
   CancunRDSCluster:
     Type: "AWS::RDS::DBCluster"
     Properties:
-      DBSubnetGroupName: !Ref "CancunSubnetGroup"
+      DBSubnetGroupName: !Ref "CancunRdsSubnetGroup"
       MasterUsername: !Ref "DBUsername"
       MasterUserPassword: !Ref "DBPassword"
       DatabaseName: "cancun"
