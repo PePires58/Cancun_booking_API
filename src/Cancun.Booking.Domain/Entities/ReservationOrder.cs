@@ -12,6 +12,7 @@ namespace Cancun.Booking.Domain.Entities
             EndDate = endDate;
             CustomerEmail = customerEmail;
             Status = ReservationOrderStatus.Reserved;
+            RoomId = 1; /*For porpuse tests, there is only one room*/
         }
 
         public int Id { get; set; }
@@ -21,6 +22,6 @@ namespace Cancun.Booking.Domain.Entities
         public ReservationOrderStatus Status { get; set; }
 
         public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
-        public int RoomId => 1; /*For porpuse tests, there is only one room*/
+        public int RoomId { get; set; }
     }
 }

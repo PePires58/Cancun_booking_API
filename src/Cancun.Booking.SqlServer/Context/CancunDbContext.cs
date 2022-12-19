@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace Cancun.Booking.MySql.Context
+namespace Cancun.Booking.SqlServer.Context
 {
     [ExcludeFromCodeCoverage]
     public class CancunDbContext : DbContext

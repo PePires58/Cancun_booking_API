@@ -22,12 +22,20 @@ namespace Cancun.Booking.Application.Validators
 
             RuleFor(c => c.CustomerEmail)
                 .NotEmpty().WithMessage("Customer email cannot be empty")
-                .NotNull().WithMessage("Customer email cannot be null")
-                .Custom((email, context) =>
-                {
-                    if (!MailAddress.TryCreate(email, out _))
-                        context.AddFailure("Customer email is invalid");
-                });
+                .NotNull().WithMessage("Customer email cannot be null");
+
+            When(c => !string.IsNullOrEmpty(c.CustomerEmail), () =>
+            {
+                RuleFor(c => c.CustomerEmail)
+                    .Custom((email, context) =>
+                    {
+                        if (!MailAddress.TryCreate(email, out _))
+                            context.AddFailure("Customer email is invalid");
+                    });
+            });
+
+
+
         }
     }
 }
