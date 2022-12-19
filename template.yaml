@@ -93,7 +93,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       Description: Check Room Availability
-      FunctionName: !Sub "Cancun-Booking-${StageName}-ModifyReservation-Fn"
+      FunctionName: !Sub "Cancun-Booking-${StageName}-CheckRoomAvailability-Fn"
       Handler: "Cancun.Booking.RoomAvailability.Lambda::Cancun.Booking.RoomAvailability.Lambda.Function::FunctionHandler"
       CodeUri: src/
       Runtime: dotnet6
