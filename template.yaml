@@ -169,7 +169,7 @@ Resources:
 
   CancunInstanceSecurityGroupIngress:
     Type: "AWS::EC2::SecurityGroupIngress"
-    DependsOn: "InstanceSecurityGroup"
+    DependsOn: "CancunInstanceSecurityGroup"
     Properties:
       GroupId: !Ref "CancunInstanceSecurityGroup"
       IpProtocol: "tcp"
