@@ -21,6 +21,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cancun.Booking.PlaceReserva
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cancun.Booking.SqlServer", "Cancun.Booking.SqlServer\Cancun.Booking.SqlServer.csproj", "{EB2FD1DE-F76D-40EF-9619-D03147C12F89}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cancun.Booking.CancelReservation.Lambda", "Cancun.Booking.CancelReservation.Lambda\Cancun.Booking.CancelReservation.Lambda.csproj", "{BA902579-1D50-4DF3-901A-79DC5631C002}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{EB2FD1DE-F76D-40EF-9619-D03147C12F89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB2FD1DE-F76D-40EF-9619-D03147C12F89}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB2FD1DE-F76D-40EF-9619-D03147C12F89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA902579-1D50-4DF3-901A-79DC5631C002}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA902579-1D50-4DF3-901A-79DC5631C002}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA902579-1D50-4DF3-901A-79DC5631C002}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA902579-1D50-4DF3-901A-79DC5631C002}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{32CDA3A8-346B-4F97-9853-5739B0DC4AC3} = {AC1D9458-C3C8-4398-8628-97D04BB262E0}
 		{A8B75FA3-0E31-4891-AD5A-DA1A82C4FF6D} = {B809F31F-F96D-4B69-A3CC-18A184B4CEA6}
 		{EB2FD1DE-F76D-40EF-9619-D03147C12F89} = {BD1DD796-F7F3-40F5-BBDA-876EC9E5C80F}
+		{BA902579-1D50-4DF3-901A-79DC5631C002} = {B809F31F-F96D-4B69-A3CC-18A184B4CEA6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {23BC0EBC-7CBB-4527-A574-548DC50470A6}

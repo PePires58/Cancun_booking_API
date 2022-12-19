@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Notification.Application.Services;
 using Notification.Domain.Interfaces;
 
-namespace Cancun.Booking.PlaceReservation.Lambda
+namespace Cancun.Booking.CancelReservation.Lambda
 {
     public static class ConfigureServices
     {
@@ -24,9 +24,9 @@ namespace Cancun.Booking.PlaceReservation.Lambda
             });
 
             services.AddScoped<INotificatorService, NotificatorService>()
-                .AddScoped<IPreBookingValidatorService, PreBookingValidatorService>()
-                .AddScoped<IPlaceReservationService, PlaceReservationService>()
+                .AddScoped<ICancelBookingService, CancelBookingService>()
                 .AddScoped<IReservationRepository, ReservationRepository>();
+
 
             return services;
         }
