@@ -15,6 +15,12 @@ Parameters:
     Description: Stage name
     Type: String
     Default: Prod
+  DBUsername:
+    Description: Db User Name
+    Type: String
+  DBPassword:
+    Description: Db Password
+    Type: String
 
 Resources:
   
@@ -148,15 +154,6 @@ Resources:
       VpcId: !Ref CancunVPC
       CidrBlock: "10.0.1.0/24"
 
-  CancunRdsSubnetGroup:
-    Type: "AWS::RDS::DBSubnetGroup"
-    Properties:
-      DBSubnetGroupName: !Sub "Cancun_${StageName}_RDS Subnet Group"
-      DBSubnetGroupDescription: "Cancun - ${StageName} - RDS Subnet Group"
-      SubnetIds:
-      - !Ref CancunSubNetPrivateA
-      - !Ref CancunSubNetPrivateB
-
   CancunInstanceSecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
     Properties:
@@ -176,3 +173,31 @@ Resources:
       FromPort: "0"
       ToPort: "1433"
       SourceSecurityGroupId: !Ref "CancunInstanceSecurityGroup"
+
+  # DATABASE
+
+  CancunRDSCluster:
+    Type: "AWS::RDS::DBCluster"
+    Properties:
+      DBSubnetGroupName: !Ref "CancunSubnetGroup"
+      MasterUsername: !Ref "DBUsername"
+      MasterUserPassword: !Ref "DBPassword"
+      DatabaseName: "cancun"
+      Engine: "mysql"
+      EngineMode: "serverless"
+      VpcSecurityGroupIds:
+      - !Ref "CancunInstanceSecurityGroup"
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 5
+        MinCapacity: 2
+        SecondsUntilAutoPause: 300
+
+  CancunRdsSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupName: !Sub "Cancun_${StageName}_RDS Subnet Group"
+      DBSubnetGroupDescription: "Cancun - ${StageName} - RDS Subnet Group"
+      SubnetIds:
+      - !Ref CancunSubNetPrivateA
+      - !Ref CancunSubNetPrivateB
