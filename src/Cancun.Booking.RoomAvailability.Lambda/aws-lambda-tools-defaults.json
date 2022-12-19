@@ -1,0 +1,13 @@
+{
+  "Information": [
+    "This lambda is responsible for check room availability, it is integrated with API Gateway."
+  ],
+  "profile": "default",
+  "region": "us-east-1",
+  "configuration": "Release",
+  "function-architecture": "x86_64",
+  "function-runtime": "dotnet6",
+  "function-memory-size": 256,
+  "function-timeout": 30,
+  "function-handler": "Cancun.Booking.RoomAvailability.Lambda::Cancun.Booking.RoomAvailability.Lambda.Function::FunctionHandler"
+}

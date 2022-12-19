@@ -19,7 +19,8 @@ namespace Cancun.Booking.Ioc
             {
                 LambdaServices.PlaceReservation => ConfigurePlaceReservationServices(),
                 LambdaServices.CancelReservation => ConfigureCancelReservationServices(),
-                LambdaServices.ModifyReservation => ConfigureModifyReservationService(),
+                LambdaServices.ModifyReservation => ConfigureModifyReservationServices(),
+                LambdaServices.CheckAvailability => ConfigureCheckAvailabilityServices(),
                 _ => throw new NotImplementedException(),
             };
         }
@@ -27,7 +28,20 @@ namespace Cancun.Booking.Ioc
         #region Private methods
 
 
-        private static IServiceCollection ConfigureModifyReservationService()
+
+        private static IServiceCollection ConfigureCheckAvailabilityServices()
+        {
+            IServiceCollection services = new ServiceCollection();
+
+            services.AddTransient<IParameterService, ParameterService>();
+
+            return ConfigureDataBase(services)
+                .AddScoped<INotificatorService, NotificatorService>()
+                .AddScoped<IRoomAvailabilityService, RoomAvailabilityService>()
+                .AddScoped<IReservationRepository, ReservationRepository>();
+        }
+
+        private static IServiceCollection ConfigureModifyReservationServices()
         {
             IServiceCollection services = new ServiceCollection();
 
