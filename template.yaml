@@ -196,7 +196,6 @@ Resources:
       MaxAllocatedStorage: 30
       Engine: mysql 
       EngineVersion: "8.0.28"
-      LicenseModel: license-included
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       VPCSecurityGroups:
