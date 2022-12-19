@@ -38,7 +38,7 @@ jobs:
 
       - name: Package
         run: |
-          sam package --s3-bucket ${{ secrets.AWS_BUCKET_DEPLOY }} --template-file template.yaml --output-template-file deploy.yaml
+          sam package --s3-bucket pepires-us-east-1-artifacts --template-file template.yaml --output-template-file deploy.yaml
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
