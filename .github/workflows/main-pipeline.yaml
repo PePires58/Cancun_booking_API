@@ -7,7 +7,6 @@ on:
 env:
   SOLUTION_PATH: "src/"
   OUTPUT_DIRECTORY: ${{ github.workspace }}/output
-  REGION: us-east-1
 
 jobs:
   Build-project:
@@ -38,11 +37,11 @@ jobs:
 
       - name: Package
         run: |
-          sam package --s3-bucket pepires-us-east-1-artifacts --template-file template.yaml --output-template-file deploy.yaml
+          sam package --s3-bucket ${{ secrets.AWS_BUCKET_DEPLOY }} --template-file template.yaml --output-template-file deploy.yaml
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
 
       - name: Deploy
         run: |
@@ -50,4 +49,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ env.AWS_REGION }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_REGION }}
