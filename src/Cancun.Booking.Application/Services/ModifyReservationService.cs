@@ -1,4 +1,5 @@
 ﻿using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
 using Notification.Domain.Interfaces;
@@ -33,18 +34,25 @@ namespace Cancun.Booking.Application.Services
                 if (IReservationRepository.Any(c => c.Id == reservationOrder.Id &&
                     c.CustomerEmail == reservationOrder.CustomerEmail))
                 {
-                    if (IReservationRepository.CheckAvailabilityOnModifyingBooking(reservationOrder))
+                    if (IReservationRepository.Any(c => c.Id == reservationOrder.Id &&
+                    c.Status == ReservationOrderStatus.Reserved))
                     {
-                        ReservationOrder reservationOrderDb = IReservationRepository.GetById(reservationOrder.Id);
 
-                        reservationOrderDb.StartDate = reservationOrder.StartDate;
-                        reservationOrderDb.EndDate = reservationOrder.EndDate;
+                        if (IReservationRepository.CheckAvailabilityOnModifyingBooking(reservationOrder))
+                        {
+                            ReservationOrder reservationOrderDb = IReservationRepository.GetById(reservationOrder.Id);
 
-                        IReservationRepository.Update(reservationOrderDb);
-                        IReservationRepository.Save();
+                            reservationOrderDb.StartDate = reservationOrder.StartDate;
+                            reservationOrderDb.EndDate = reservationOrder.EndDate;
+
+                            IReservationRepository.Update(reservationOrderDb);
+                            IReservationRepository.Save();
+                        }
+                        else
+                            HandleNotification($"The room {reservationOrder.RoomId} is not available for this date");
                     }
                     else
-                        HandleNotification($"The room {reservationOrder.RoomId} is not available for this date");
+                        HandleNotification("You cannot modify this reservation because it's already cancelled");
                 }
                 else
                     HandleNotification("You cannot cancel this reservation because it's not belongs to you");

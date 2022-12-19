@@ -20,8 +20,8 @@ namespace Cancun.Booking.Domain.Entities
         public DateTime EndDate { get; set; }
         public string CustomerEmail { get; set; }
         public ReservationOrderStatus Status { get; set; }
+        public int RoomId { get; set; }
 
         public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
-        public int RoomId { get; set; }
     }
 }

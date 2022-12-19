@@ -9,36 +9,36 @@ using System.Net;
 
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
-namespace Cancun.Booking.PlaceReservation.Lambda;
+namespace Cancun.Booking.ModifyReservation.Lambda;
 
 public class Function : DefaultLambdaWorkflow<ReservationOrder>
 {
     #region Properties
-    IPlaceReservationService IPlaceReservationService { get; set; }
+    IModifyReservationService? IModifyReservationService { get; set; }
 
     protected override APIGatewayProxyResponse Response => new()
     {
-        StatusCode = (int)HttpStatusCode.Created
+        StatusCode = (int)HttpStatusCode.OK
     };
     #endregion
 
     #region Constructor
-    public Function() : base(LambdaServices.PlaceReservation)
+    public Function() : base(LambdaServices.ModifyReservation)
     {
-        IPlaceReservationService = ServiceProvider.GetService<IPlaceReservationService>();
+        IModifyReservationService = ServiceProvider.GetService<IModifyReservationService>();
     }
     #endregion
 
     #region Methods
     public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request,
-        ILambdaContext context)
+               ILambdaContext context)
     {
         return DefaultLambdaHandler(request, context);
     }
 
-    protected override void CallService(ReservationOrder reservationOrder)
+    protected override void CallService(ReservationOrder entryObject)
     {
-        IPlaceReservationService.PlaceReservation(reservationOrder);
+        IModifyReservationService?.ModifyReservation(entryObject);
     }
     #endregion
 

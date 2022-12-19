@@ -1,5 +1,6 @@
 ﻿using Cancun.Booking.Application.Services;
 using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
 using Moq;
@@ -123,6 +124,31 @@ namespace Cancun.Booking.Tests
             Assert.IsTrue(INotificatorService.HasNotification);
             Assert.IsTrue(INotificatorService.Any(c => c.Message == "You cannot cancel this reservation because it's not belongs to you"));
         }
+
+        [TestMethod]
+        public void ShouldHaveANotificationOfAlreadyCancelled()
+        {
+            ReservationOrder reservationOrder = new(DateTime.Now.AddDays(Parameters.MinDaysBookingAdvance),
+                                        DateTime.Now.AddDays(Parameters.MinDaysBookingAdvance + Parameters.MaxStayDays), CustomerEmail)
+            {
+                Id = 2
+            };
+
+            IReservationRepository.Setup(c => c.Any(c => c.Id == reservationOrder.Id))
+                .Returns(true);
+            IReservationRepository.Setup(c => c.Any(c => c.Id == reservationOrder.Id &&
+                        c.CustomerEmail == reservationOrder.CustomerEmail))
+                .Returns(true);
+            IReservationRepository.Setup(c => c.Any(c => c.Id == reservationOrder.Id &&
+                c.Status == ReservationOrderStatus.Reserved))
+                .Returns(false);
+
+            IModifyReservationService.ModifyReservation(reservationOrder);
+
+            Assert.IsTrue(INotificatorService.HasNotification);
+            Assert.IsTrue(INotificatorService.Any(c => c.Message == "You cannot modify this reservation because it's already cancelled"));
+        }
+
 
         [TestMethod]
         public void ShouldModifyTheReservation()

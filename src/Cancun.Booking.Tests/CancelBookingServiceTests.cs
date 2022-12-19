@@ -1,5 +1,6 @@
 ﻿using Cancun.Booking.Application.Services;
 using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -88,11 +89,34 @@ namespace Cancun.Booking.Tests
         }
 
         [TestMethod]
+        public void ShouldHaveANotificationOfAlreadyCancelled()
+        {
+            CancelReservationOrder cancelReservationOrder = new(CustomerEmail, 2);
+
+            IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId))
+                .Returns(true);
+            IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
+                        c.CustomerEmail == cancelReservationOrder.CustomerEmail))
+                .Returns(true);
+            IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
+                c.Status == ReservationOrderStatus.Reserved))
+                .Returns(false);
+
+            ICancelBookingService.CancelBooking(cancelReservationOrder);
+
+            Assert.IsTrue(INotificatorService.HasNotification);
+            Assert.IsTrue(INotificatorService.Any(c => c.Message == "You cannot cancel this reservation because it's already cancelled"));
+        }
+
+        [TestMethod]
         public void ShouldHaveANotificationOfReservationDoesNotBelongsToYou()
         {
             CancelReservationOrder cancelReservationOrder = new(CustomerEmail, 2);
 
             IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId))
+                .Returns(true);
+            IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
+                c.Status == ReservationOrderStatus.Reserved))
                 .Returns(true);
             IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
                         c.CustomerEmail == cancelReservationOrder.CustomerEmail))
@@ -111,6 +135,9 @@ namespace Cancun.Booking.Tests
             ReservationOrder reservationOrder = new();
 
             IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId))
+                .Returns(true);
+            IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
+                c.Status == ReservationOrderStatus.Reserved))
                 .Returns(true);
             IReservationRepository.Setup(c => c.Any(c => c.Id == cancelReservationOrder.ReservationId &&
                         c.CustomerEmail == cancelReservationOrder.CustomerEmail))

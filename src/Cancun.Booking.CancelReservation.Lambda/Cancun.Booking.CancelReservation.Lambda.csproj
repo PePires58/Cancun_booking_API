@@ -20,8 +20,6 @@
     <PackageReference Include="Notification.Nuget" Version="2.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Cancun.Booking.Application\Cancun.Booking.Application.csproj" />
-    <ProjectReference Include="..\Cancun.Booking.Domain\Cancun.Booking.Domain.csproj" />
-    <ProjectReference Include="..\Cancun.Booking.SqlServer\Cancun.Booking.SqlServer.csproj" />
+    <ProjectReference Include="..\Cancun.Booking.Shared\Cancun.Booking.Shared.csproj" />
   </ItemGroup>
 </Project>

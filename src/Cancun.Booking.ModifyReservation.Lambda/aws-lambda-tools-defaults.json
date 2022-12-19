@@ -1,0 +1,13 @@
+{
+  "Information": [
+    "Lambda responsible for modify a reservation, it is integrated with API gateway"
+  ],
+  "profile": "default",
+  "region": "us-east-1",
+  "configuration": "Release",
+  "function-architecture": "x86_64",
+  "function-runtime": "dotnet6",
+  "function-memory-size": 256,
+  "function-timeout": 30,
+  "function-handler": "Cancun.Booking.ModifyReservation.Lambda::Cancun.Booking.ModifyReservation.Lambda.Function::FunctionHandler"
+}

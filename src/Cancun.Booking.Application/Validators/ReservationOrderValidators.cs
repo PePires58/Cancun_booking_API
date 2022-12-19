@@ -1,4 +1,5 @@
 ﻿using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Domain.Enums;
 using FluentValidation;
 using System.Net.Mail;
 
@@ -34,8 +35,8 @@ namespace Cancun.Booking.Application.Validators
                     });
             });
 
-
-
+            RuleFor(c => c.Status)
+                .Equal(ReservationOrderStatus.Reserved).WithMessage("Invalid status for reservation");
         }
     }
 }

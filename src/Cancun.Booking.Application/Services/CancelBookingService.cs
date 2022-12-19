@@ -29,13 +29,20 @@ namespace Cancun.Booking.Application.Services
             {
                 if (IReservationRepository.Any(c => c.Id == cancelReservationOrder.ReservationId))
                 {
+
                     if (IReservationRepository.Any(c => c.Id == cancelReservationOrder.ReservationId &&
                         c.CustomerEmail == cancelReservationOrder.CustomerEmail))
                     {
-                        ReservationOrder reservationOrderDb = IReservationRepository.GetById(cancelReservationOrder.ReservationId);
-                        reservationOrderDb.Status = ReservationOrderStatus.Canceled;
-                        IReservationRepository.Update(reservationOrderDb);
-                        IReservationRepository.Save();
+                        if (IReservationRepository.Any(c => c.Id == cancelReservationOrder.ReservationId &&
+                        c.Status == ReservationOrderStatus.Reserved))
+                        {
+                            ReservationOrder reservationOrderDb = IReservationRepository.GetById(cancelReservationOrder.ReservationId);
+                            reservationOrderDb.Status = ReservationOrderStatus.Canceled;
+                            IReservationRepository.Update(reservationOrderDb);
+                            IReservationRepository.Save();
+                        }
+                        else
+                            HandleNotification("You cannot cancel this reservation because it's already cancelled");
                     }
                     else
                         HandleNotification("You cannot cancel this reservation because it's not belongs to you");

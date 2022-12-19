@@ -6,29 +6,29 @@ using Cancun.Booking.Domain.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Cancun.Booking.Domain.Entities;
+using Cancun.Booking.Shared;
+using Cancun.Booking.Domain.Enums;
 
-// Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
 namespace Cancun.Booking.CancelReservation.Lambda;
 
-public class Function
+public class Function : DefaultLambdaWorkflow<CancelReservationOrder>
 {
 
     #region Properties
     ICancelBookingService ICancelBookingService { get; set; }
-    INotificatorService INotificatorService { get; set; }
-    IServiceCollection IServiceCollection { get; set; }
+
+    protected override APIGatewayProxyResponse Response => new()
+    {
+        StatusCode = (int)HttpStatusCode.OK
+    };
     #endregion
 
     #region Constructor
-    public Function()
+    public Function() : base(LambdaServices.CancelReservation)
     {
-        IServiceCollection = ConfigureServices.Configure();
-
-        ServiceProvider serviceProvider = IServiceCollection.BuildServiceProvider();
-        INotificatorService = serviceProvider.GetService<INotificatorService>();
-        ICancelBookingService  = serviceProvider.GetService<ICancelBookingService>();
+        ICancelBookingService = ServiceProvider.GetService<ICancelBookingService>();
     }
     #endregion
 
@@ -36,58 +36,11 @@ public class Function
     public APIGatewayProxyResponse FunctionHandler(APIGatewayProxyRequest request,
         ILambdaContext context)
     {
-        if (request == null || request.Body == null)
-            return new APIGatewayProxyResponse()
-            {
-                StatusCode = (int)HttpStatusCode.BadRequest
-            };
+        return DefaultLambdaHandler(request, context);
+    }
 
-        try
-        {
-            CancelReservationOrder cancelReservationOrder = JsonConvert.DeserializeObject<CancelReservationOrder>(request.Body);
-
-            if (cancelReservationOrder != null)
-                ICancelBookingService.CancelBooking(
-                    cancelReservationOrder
-                    );
-            else
-                INotificatorService.HandleNotification("Entry object is invalid");
-
-            if (INotificatorService.HasNotification)
-                return new APIGatewayProxyResponse()
-                {
-                    StatusCode = (int)HttpStatusCode.BadRequest,
-                    Body = JsonConvert.SerializeObject(
-                        INotificatorService.GetList()
-                        )
-                };
-
-            return new APIGatewayProxyResponse()
-            {
-                StatusCode = (int)HttpStatusCode.OK
-            };
-        }
-        catch (JsonException)
-        {
-            INotificatorService.HandleNotification("Entry object is invalid");
-            return new APIGatewayProxyResponse()
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError,
-                Body = JsonConvert.SerializeObject(
-                    INotificatorService.GetList()
-                    )
-            };
-        }
-        catch (Exception)
-        {
-            INotificatorService.HandleNotification("Something went wrong");
-            return new APIGatewayProxyResponse()
-            {
-                StatusCode = (int)HttpStatusCode.InternalServerError,
-                Body = JsonConvert.SerializeObject(
-                    INotificatorService.GetList()
-                    )
-            };
-        }
+    protected override void CallService(CancelReservationOrder cancelReservationOrder)
+    {
+        ICancelBookingService.CancelBooking(cancelReservationOrder);
     }
 }
