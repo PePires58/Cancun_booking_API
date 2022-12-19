@@ -120,5 +120,59 @@ Resources:
       EnableDnsSupport: true
       InstanceTenancy: default
       Tags: 
-        - Key: stack
-          Value: !Ref StageName
+        - Key: Name
+          Value: !Sub "Cancun-${StageName}-VPC"
+
+  CancunRouteTable:
+    Type: "AWS::EC2::RouteTable"
+    Properties:
+      VpcId: !Ref CancunVPC
+
+  CancunSubNetPrivateA:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: !Select 
+        - 0
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref CancunVPC
+      CidrBlock: "10.0.0.0/24"
+
+  CancunSubNetPrivateB:
+    Type: "AWS::EC2::Subnet"
+    Properties:
+      AvailabilityZone: !Select 
+        - 1
+        - !GetAZs 
+          Ref: 'AWS::Region'
+      VpcId: !Ref CancunVPC
+      CidrBlock: "10.0.1.0/24"
+
+  CancunRdsSubnetGroup:
+    Type: "AWS::RDS::DBSubnetGroup"
+    Properties:
+      DBSubnetGroupName: !Sub "Cancun_${StageName}_RDS Subnet Group"
+      DBSubnetGroupDescription: "Cancun - ${StageName} - RDS Subnet Group"
+      SubnetIds:
+      - !Ref CancunSubNetPrivateA
+      - !Ref CancunSubNetPrivateB
+
+  CancunInstanceSecurityGroup:
+    Type: "AWS::EC2::SecurityGroup"
+    Properties:
+      GroupName: !Sub "Cancun RDS Security Group - ${StageName}"
+      GroupDescription: !Sub "Cancun - RDS traffic - ${StageName}"
+      VpcId: !Ref CancunVPC
+      SecurityGroupEgress:
+      - IpProtocol: "-1"
+        CidrIp: "0.0.0.0/0"
+
+  CancunInstanceSecurityGroupIngress:
+    Type: "AWS::EC2::SecurityGroupIngress"
+    DependsOn: "InstanceSecurityGroup"
+    Properties:
+      GroupId: !Ref "CancunInstanceSecurityGroup"
+      IpProtocol: "tcp"
+      FromPort: "0"
+      ToPort: "1433"
+      SourceSecurityGroupId: !Ref "CancunInstanceSecurityGroup"
