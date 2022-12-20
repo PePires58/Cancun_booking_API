@@ -14,7 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cancun.Booking.Application\Cancun.Booking.Application.csproj" />
     <ProjectReference Include="..\Cancun.Booking.Domain\Cancun.Booking.Domain.csproj" />
-    <ProjectReference Include="..\Cancun.Booking.SqlServer\Cancun.Booking.MySql.csproj" />
+    <ProjectReference Include="..\Cancun.Booking.MySql\Cancun.Booking.MySql.csproj" />
   </ItemGroup>
 
 </Project>
