@@ -187,8 +187,8 @@ Resources:
     Properties:
       GroupId: !Ref "CancunInstanceSecurityGroup"
       IpProtocol: "tcp"
-      FromPort: "1433"
-      ToPort: "1433"
+      FromPort: "3306"
+      ToPort: "3306"
       SourceSecurityGroupId: !Ref "CancunInstanceSecurityGroup"
 
   # DATABASE
