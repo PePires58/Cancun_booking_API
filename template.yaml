@@ -21,6 +21,9 @@ Parameters:
   DBPassword:
     Description: Db Password
     Type: String
+  DbConnectionString:
+    Description: Db Connection string
+    Type: string
 
 Resources:
   
@@ -50,6 +53,7 @@ Resources:
           MAXSTAYDAYS: !Ref MaxStayDays
           MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
           MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
+          DBCONNECTIONSTRING: !Ref DbConnectionString
 
   CancelReservationFunction:
     Type: AWS::Serverless::Function
@@ -72,7 +76,8 @@ Resources:
           MAXSTAYDAYS: !Ref MaxStayDays
           MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
           MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
-    
+          DBCONNECTIONSTRING: !Ref DbConnectionString
+
   ModifyReservationFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -94,6 +99,7 @@ Resources:
           MAXSTAYDAYS: !Ref MaxStayDays
           MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
           MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
+          DBCONNECTIONSTRING: !Ref DbConnectionString
 
   CheckRoomAvailabilityFunction:
     Type: AWS::Serverless::Function
@@ -116,6 +122,7 @@ Resources:
           MAXSTAYDAYS: !Ref MaxStayDays
           MAXDAYSBOOKINGADVANCE: !Ref MaxDaysBookingAdvance
           MINDAYSBOOKINGADVANCE: !Ref MinDaysBookingAdvance
+          DBCONNECTIONSTRING: !Ref DbConnectionString
 
   # VPC and network infra
   CancunVPC:
