@@ -23,3 +23,5 @@ About the project:
 
 To ensure that the solution will be high available and cost optimized, all the services are "serverless" and with region scope, that means if one AZ fall out, the availability of the solution will not be impacted. Also the database is serverless with Aurora (database optimized for cloud solutions with AWS).
 
+Solution architecture simplified bellow:
+![Solution architecture simplified](https://github.com/PePires58/Cancun_booking_API/blob/main/docs/solutionArchitectureSimplified.png?raw=true)
