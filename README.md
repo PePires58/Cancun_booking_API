@@ -18,3 +18,7 @@ About the project:
 - Used GitHub actions for CI/CD with scripting commands
 - API Gateway
 - One Lambda per endpoint in order to isolate each part
+- Cloud Provider is AWS
+
+To ensure that the solution will be high available, all the services are "serverless" and with region scope, that means if one AZ fall out, the availability of the solution will not be impacted. Also the database is serverless with Aurora (database optimized for cloud solutions with AWS).
+

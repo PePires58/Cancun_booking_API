@@ -207,6 +207,6 @@ Resources:
       - !Ref "CancunInstanceSecurityGroup"
       ScalingConfiguration:
         AutoPause: true
-        MaxCapacity: 5
-        MinCapacity: 2
+        MaxCapacity: 2
+        MinCapacity: 1
         SecondsUntilAutoPause: 300
