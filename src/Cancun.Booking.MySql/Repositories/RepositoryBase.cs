@@ -1,10 +1,10 @@
 ﻿using Cancun.Booking.Domain.Interfaces.Repository;
-using Cancun.Booking.SqlServer.Context;
+using Cancun.Booking.MySql.Context;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
-namespace Cancun.Booking.SqlServer.Repositories
+namespace Cancun.Booking.MySql.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class RepositoryBase<T> : IRepositoryBase<T>, IDisposable

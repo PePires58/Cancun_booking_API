@@ -1,10 +1,10 @@
 ﻿using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
-using Cancun.Booking.SqlServer.Context;
+using Cancun.Booking.MySql.Context;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Cancun.Booking.SqlServer.Repositories
+namespace Cancun.Booking.MySql.Repositories
 {
     [ExcludeFromCodeCoverage]
     public class ReservationRepository : RepositoryBase<ReservationOrder>, IReservationRepository

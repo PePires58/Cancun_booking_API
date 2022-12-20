@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System.Diagnostics.CodeAnalysis;
 
-namespace Cancun.Booking.SqlServer.Configurations
+namespace Cancun.Booking.MySql.Configurations
 {
     [ExcludeFromCodeCoverage]
     public class ReservationConfiguration : IEntityTypeConfiguration<ReservationOrder>

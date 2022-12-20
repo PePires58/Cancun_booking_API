@@ -19,6 +19,7 @@ About the project:
 - API Gateway
 - One Lambda per endpoint in order to isolate each part
 - Cloud Provider is AWS
+- Database is MySQL with Aurora Serverless Cluster
 
-To ensure that the solution will be high available, all the services are "serverless" and with region scope, that means if one AZ fall out, the availability of the solution will not be impacted. Also the database is serverless with Aurora (database optimized for cloud solutions with AWS).
+To ensure that the solution will be high available and cost optimized, all the services are "serverless" and with region scope, that means if one AZ fall out, the availability of the solution will not be impacted. Also the database is serverless with Aurora (database optimized for cloud solutions with AWS).
 

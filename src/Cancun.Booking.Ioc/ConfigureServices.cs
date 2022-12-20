@@ -2,8 +2,8 @@
 using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
-using Cancun.Booking.SqlServer.Context;
-using Cancun.Booking.SqlServer.Repositories;
+using Cancun.Booking.MySql.Context;
+using Cancun.Booking.MySql.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Notification.Application.Services;
@@ -82,7 +82,7 @@ namespace Cancun.Booking.Ioc
         private static IServiceCollection ConfigureDataBase(IServiceCollection services) =>
             services.AddDbContext<CancunDbContext>(options =>
             {
-                options.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CancunDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
+                options.UseMySQL(Environment.GetEnvironmentVariable("DBCONNECTIONSTRING"));
             });
 
 

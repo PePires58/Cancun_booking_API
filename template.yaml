@@ -23,7 +23,7 @@ Parameters:
     Type: String
   DbConnectionString:
     Description: Db Connection string
-    Type: string
+    Type: String
     Default: ''
 
 Resources:
