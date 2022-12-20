@@ -193,3 +193,20 @@ Resources:
       SubnetIds:
       - !Ref CancunSubNetPrivateA
       - !Ref CancunSubNetPrivateB
+
+  CancunRDSCluster:
+    Type: "AWS::RDS::DBCluster"
+    Properties:
+      DBSubnetGroupName: !Ref "CancunRdsSubnetGroup"
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      DatabaseName: "cancundb"
+      Engine: "aurora"
+      EngineMode: "serverless"
+      VpcSecurityGroupIds:
+      - !Ref "CancunInstanceSecurityGroup"
+      ScalingConfiguration:
+        AutoPause: true
+        MaxCapacity: 5
+        MinCapacity: 2
+        SecondsUntilAutoPause: 300
