@@ -22,11 +22,6 @@ namespace Cancun.Booking.Shared
 
         public DefaultLambdaWorkflow(LambdaServices lambdaServices)
         {
-
-            Environment.SetEnvironmentVariable("MINDAYSBOOKINGADVANCE", "1");
-            Environment.SetEnvironmentVariable("MAXSTAYDAYS", "3");
-            Environment.SetEnvironmentVariable("MAXDAYSBOOKINGADVANCE", "30");
-
             ServiceProvider = ConfigureServices
                 .Configure(lambdaServices)
                 .BuildServiceProvider();

@@ -13,11 +13,9 @@ namespace Cancun.Booking.Tests
         #region Constructor
         public ParameterServiceTests()
         {
-            IParameterService = new ParameterService();
+            EnvironmentVariablesForTesting.Configure();
 
-            Environment.SetEnvironmentVariable("MINDAYSBOOKINGADVANCE", "1");
-            Environment.SetEnvironmentVariable("MAXSTAYDAYS", "3");
-            Environment.SetEnvironmentVariable("MAXDAYSBOOKINGADVANCE", "30");
+            IParameterService = new ParameterService();
         }
         #endregion
 

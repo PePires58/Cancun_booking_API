@@ -22,9 +22,7 @@ namespace Cancun.Booking.Tests
         #region Constructor
         public PreBookingValidatorServiceTests()
         {
-            Environment.SetEnvironmentVariable("MINDAYSBOOKINGADVANCE", "1");
-            Environment.SetEnvironmentVariable("MAXSTAYDAYS", "3");
-            Environment.SetEnvironmentVariable("MAXDAYSBOOKINGADVANCE", "30");
+            EnvironmentVariablesForTesting.Configure();
 
             INotificatorService = new NotificatorService();
             IParameterService = new ParameterService();
