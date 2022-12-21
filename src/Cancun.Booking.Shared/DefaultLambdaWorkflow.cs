@@ -15,7 +15,6 @@ namespace Cancun.Booking.Shared
         #region Properties
         protected ServiceProvider ServiceProvider { get; set; }
         protected INotificatorService INotificatorService { get; set; }
-        
         #endregion
 
         #region Constructor

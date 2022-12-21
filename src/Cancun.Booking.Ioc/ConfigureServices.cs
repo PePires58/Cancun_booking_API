@@ -6,6 +6,7 @@ using Cancun.Booking.MySql.Context;
 using Cancun.Booking.MySql.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Notification.Application.Services;
 using Notification.Domain.Interfaces;
 
@@ -15,7 +16,7 @@ namespace Cancun.Booking.Ioc
     {
         public static IServiceCollection Configure(LambdaServices lambdaServices)
         {
-            return lambdaServices switch
+            IServiceCollection services = lambdaServices switch
             {
                 LambdaServices.PlaceReservation => ConfigurePlaceReservationServices(),
                 LambdaServices.CancelReservation => ConfigureCancelReservationServices(),
@@ -23,6 +24,8 @@ namespace Cancun.Booking.Ioc
                 LambdaServices.CheckAvailability => ConfigureCheckAvailabilityServices(),
                 _ => throw new NotImplementedException(),
             };
+
+            return AddCustomLogging(services);
         }
 
         #region Private methods
@@ -85,6 +88,12 @@ namespace Cancun.Booking.Ioc
                 options.UseMySQL(Environment.GetEnvironmentVariable("DBCONNECTIONSTRING"));
             });
 
+        private static IServiceCollection AddCustomLogging(IServiceCollection services) =>
+            services.AddLogging((logging) =>
+            {
+                logging.AddLambdaLogger();
+                logging.SetMinimumLevel(LogLevel.Debug);
+            });
 
         #endregion
     }
