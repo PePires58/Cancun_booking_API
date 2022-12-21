@@ -1,7 +1,9 @@
 using Cancun.Booking.Application.Services;
 using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Notification.Application.Services;
 using Notification.Domain.Interfaces;
 
@@ -15,6 +17,8 @@ namespace Cancun.Booking.Tests
         INotificatorService INotificatorService { get; set; }
         IParameterService IParameterService { get; set; }
 
+        Mock<ILogger<PreBookingValidatorService>> ILogger { get; set; }
+
         static string CustomerEmail => "Customer@gmail.com";
         Parameters Parameters => IParameterService.GetParameters();
         #endregion
@@ -26,7 +30,12 @@ namespace Cancun.Booking.Tests
 
             INotificatorService = new NotificatorService();
             IParameterService = new ParameterService();
-            IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, IParameterService);
+
+            ILogger = new Mock<ILogger<PreBookingValidatorService>>();
+
+            IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, 
+                IParameterService,
+                ILogger.Object);
         }
         #endregion
 

@@ -3,6 +3,8 @@ using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Notification.Application.Services;
@@ -17,6 +19,7 @@ namespace Cancun.Booking.Tests
         INotificatorService INotificatorService { get; set; }
         ICancelBookingService ICancelBookingService { get; set; }
         Mock<IReservationRepository> IReservationRepository { get; set; }
+        Mock<ILogger<CancelBookingService>> ILogger { get; set; }
 
         static string CustomerEmail => "Customer@email.com";
         #endregion
@@ -26,7 +29,10 @@ namespace Cancun.Booking.Tests
         {
             INotificatorService = new NotificatorService();
             IReservationRepository = new Mock<IReservationRepository>();
-            ICancelBookingService = new CancelBookingService(INotificatorService, IReservationRepository.Object);
+            ILogger = new Mock<ILogger<CancelBookingService>>();
+            ICancelBookingService = new CancelBookingService(INotificatorService, 
+                IReservationRepository.Object,
+                ILogger.Object);
         }
         #endregion
 

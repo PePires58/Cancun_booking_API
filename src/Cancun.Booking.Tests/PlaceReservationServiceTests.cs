@@ -2,6 +2,8 @@
 using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Notification.Application.Services;
@@ -23,7 +25,10 @@ namespace Cancun.Booking.Tests
         IParameterService IParameterService { get; set; }
         IPlaceReservationService IPlaceReservationService { get; set; }
         Mock<IReservationRepository> IReservationRepository { get; set; }
-        
+        Mock<ILogger<PlaceReservationService>> ILogger { get; set; }
+        Mock<ILogger<PreBookingValidatorService>> PreBookingValidatorServiceLogger { get; set; }
+
+
         static string CustomerEmail => "Customer@email.com";
         Parameters Parameters { get; set; }
         #endregion
@@ -34,11 +39,19 @@ namespace Cancun.Booking.Tests
             INotificatorService = new NotificatorService();
             IParameterService = new ParameterService();
 
-            IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, IParameterService);
+            PreBookingValidatorServiceLogger = new Mock<ILogger<PreBookingValidatorService>>();
+
+            IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, 
+                IParameterService,
+                PreBookingValidatorServiceLogger.Object);
 
             IReservationRepository = new Mock<IReservationRepository>();
+            ILogger = new Mock<ILogger<PlaceReservationService>>();
 
-            IPlaceReservationService = new PlaceReservationService(INotificatorService, IPreBookingValidatorService, IReservationRepository.Object);
+            IPlaceReservationService = new PlaceReservationService(INotificatorService, 
+                IPreBookingValidatorService, 
+                IReservationRepository.Object,
+                ILogger.Object);
 
             Parameters = IParameterService.GetParameters();
         }

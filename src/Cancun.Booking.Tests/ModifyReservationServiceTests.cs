@@ -3,6 +3,8 @@ using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Enums;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
+using Castle.Core.Logging;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Notification.Application.Services;
 using Notification.Domain.Interfaces;
@@ -26,6 +28,8 @@ namespace Cancun.Booking.Tests
         Parameters Parameters { get; set; }
         Mock<IReservationRepository> IReservationRepository { get; set; }
 
+        Mock<ILogger<PreBookingValidatorService>> PreBookingValidatorServiceLogger { get; set; }
+
         static string CustomerEmail => "Customer@email.com";
 
         #endregion
@@ -37,7 +41,12 @@ namespace Cancun.Booking.Tests
 
             INotificatorService = new NotificatorService();
             IParameterService = new ParameterService();
-            IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, IParameterService);
+
+            PreBookingValidatorServiceLogger = new Mock<ILogger<PreBookingValidatorService>>();
+
+            IPreBookingValidatorService = new PreBookingValidatorService(INotificatorService, 
+                IParameterService,
+                PreBookingValidatorServiceLogger.Object);
 
             Parameters = IParameterService.GetParameters();
             IReservationRepository = new Mock<IReservationRepository>();

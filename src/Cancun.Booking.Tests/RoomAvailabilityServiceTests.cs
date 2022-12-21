@@ -2,6 +2,7 @@
 using Cancun.Booking.Domain.Entities;
 using Cancun.Booking.Domain.Interfaces.Repository;
 using Cancun.Booking.Domain.Interfaces.Services;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Notification.Application.Services;
 using Notification.Domain.Interfaces;
@@ -15,6 +16,7 @@ namespace Cancun.Booking.Tests
         INotificatorService INotificatorService { get; set; }
         IRoomAvailabilityService IRoomAvailabilityService { get; set; }
         Mock<IReservationRepository> IReservationRepository { get; set; }
+        Mock<ILogger<RoomAvailabilityService>> ILogger { get; set; }
         static string CustomerEmail => "customer@email.com";
         #endregion
 
@@ -23,7 +25,10 @@ namespace Cancun.Booking.Tests
         {
             INotificatorService = new NotificatorService();
             IReservationRepository = new Mock<IReservationRepository>();
-            IRoomAvailabilityService = new RoomAvailabilityService(INotificatorService, IReservationRepository.Object);
+            ILogger = new Mock<ILogger<RoomAvailabilityService>>();
+            IRoomAvailabilityService = new RoomAvailabilityService(INotificatorService,
+                IReservationRepository.Object,
+                ILogger.Object);
         }
         #endregion
 
