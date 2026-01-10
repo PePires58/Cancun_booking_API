@@ -1,4 +1,5 @@
 using Application.Dto;
+using Application.Exceptions;
 using Application.Services;
 using Domain.Entities;
 using Domain.Enuns;
@@ -66,7 +67,7 @@ namespace API.Tests
             };
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => service.CheckAvailability(dto));
+            var exception = Assert.Throws<RoomNotAvailableException>(() => service.CheckAvailability(dto));
             Assert.Contains("Room is not available", exception.Message);
         }
 

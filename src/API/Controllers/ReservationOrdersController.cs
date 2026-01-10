@@ -1,4 +1,5 @@
 using Application.Dto;
+using Application.Exceptions;
 using Application.Services;
 using Domain.Enuns;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,16 @@ namespace API.Controllers
                 _logger.LogWarning("Invalid reservation request: {Message}", ex.Message);
                 return BadRequest(new { error = ex.Message });
             }
+            catch (RoomNotAvailableException ex)
+            {
+                _logger.LogWarning("Room not available: {Message}", ex.Message);
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (InvalidReservationException ex)
+            {
+                _logger.LogWarning("Invalid reservation: {Message}", ex.Message);
+                return BadRequest(new { error = ex.Message });
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating reservation");
@@ -52,16 +63,23 @@ namespace API.Controllers
         /// <summary>
         /// Updates an existing reservation order
         /// </summary>
+        /// <param name="id">Reservation ID from path</param>
         /// <param name="orderDto">Updated reservation order details</param>
         /// <returns>No content on success</returns>
-        [HttpPut]
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult UpdateReservation([FromBody] ReservationOrderDto orderDto)
+        public IActionResult UpdateReservation(int id, [FromBody] ReservationOrderDto orderDto)
         {
             try
             {
+                if (id != orderDto.Id)
+                {
+                    _logger.LogWarning("Path ID {PathId} does not match body ID {BodyId}", id, orderDto.Id);
+                    return BadRequest(new { error = "The ID in the URL does not match the ID in the request body." });
+                }
+
                 _reservationOrderService.UpdateReservationOrder(orderDto);
                 _logger.LogInformation("Reservation {Id} updated for customer: {Email}", orderDto.Id, orderDto.CustomerEmail);
                 return NoContent();
@@ -69,6 +87,21 @@ namespace API.Controllers
             catch (ArgumentException ex)
             {
                 _logger.LogWarning("Invalid reservation update: {Message}", ex.Message);
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (ReservationNotFoundException ex)
+            {
+                _logger.LogWarning("Reservation not found: {Message}", ex.Message);
+                return NotFound(new { error = ex.Message });
+            }
+            catch (RoomNotAvailableException ex)
+            {
+                _logger.LogWarning("Room not available: {Message}", ex.Message);
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (InvalidReservationException ex)
+            {
+                _logger.LogWarning("Invalid reservation: {Message}", ex.Message);
                 return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)
@@ -81,15 +114,15 @@ namespace API.Controllers
         /// <summary>
         /// Cancels a reservation order
         /// </summary>
-        /// <param name="id">Reservation ID from header</param>
+        /// <param name="id">Reservation ID from path</param>
         /// <param name="email">Customer email from header</param>
         /// <returns>No content on success</returns>
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult CancelReservation(
-            [FromHeader(Name = "X-Reservation-Id")] int id,
+            int id,
             [FromHeader(Name = "X-Customer-Email")] string email)
         {
             try
@@ -114,6 +147,11 @@ namespace API.Controllers
             {
                 _logger.LogWarning("Cannot cancel reservation: {Message}", ex.Message);
                 return BadRequest(new { error = ex.Message });
+            }
+            catch (ReservationNotFoundException ex)
+            {
+                _logger.LogWarning("Reservation not found: {Message}", ex.Message);
+                return NotFound(new { error = ex.Message });
             }
             catch (Exception ex)
             {

@@ -24,12 +24,12 @@ namespace Domain.Entities
         }
 
         public int Id { get; init; }
-        public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
-        public string CustomerEmail { get; private set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string CustomerEmail { get; set; }
         public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
-        public ReservationStatus Status { get; private set; }
-        public int RoomId { get; private set; }
+        public ReservationStatus Status { get; set; }
+        public int RoomId { get; set; }
 
         public void Cancel()
         {

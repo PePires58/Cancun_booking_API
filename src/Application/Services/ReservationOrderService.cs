@@ -1,4 +1,5 @@
 ﻿using Application.Dto;
+using Application.Exceptions;
 using Application.Interfaces;
 using Domain.Entities;
 using Infra;
@@ -26,7 +27,10 @@ namespace Application.Services
                 .FirstOrDefault(c => c.Id == orderDto.Id
                 && c.CustomerEmail == orderDto.CustomerEmail);
 
-            reservation?.UpdateDates(orderDto.StartDate, orderDto.EndDate);
+            if (reservation == null)
+                throw new ReservationNotFoundException(orderDto.Id);
+
+            reservation.UpdateDates(orderDto.StartDate, orderDto.EndDate);
             _dbContext.SaveChanges();
         }
 
@@ -36,7 +40,10 @@ namespace Application.Services
                 .FirstOrDefault(c => c.Id == orderDto.Id 
                 && c.CustomerEmail == orderDto.CustomerEmail);
 
-            reservation?.Cancel();
+            if (reservation == null)
+                throw new ReservationNotFoundException(orderDto.Id);
+
+            reservation.Cancel();
             _dbContext.SaveChanges();
         }
     }

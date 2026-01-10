@@ -61,8 +61,11 @@ Create a new reservation.
 
 **Response:** 201 Created
 
-### PUT /ReservationOrders
+### PUT /ReservationOrders/{id}
 Update an existing reservation.
+
+**Path Parameter:**
+- `id`: Reservation ID
 
 **Request Body:**
 ```json
@@ -74,13 +77,17 @@ Update an existing reservation.
 }
 ```
 
+**Note:** The `id` in the path must match the `id` in the request body.
+
 **Response:** 204 No Content
 
-### DELETE /ReservationOrders
+### DELETE /ReservationOrders/{id}
 Cancel a reservation.
 
+**Path Parameter:**
+- `id`: Reservation ID
+
 **Headers:**
-- `X-Reservation-Id`: Reservation ID
 - `X-Customer-Email`: Customer email
 
 **Response:** 204 No Content

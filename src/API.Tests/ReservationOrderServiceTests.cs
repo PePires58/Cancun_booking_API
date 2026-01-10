@@ -1,4 +1,5 @@
 using Application.Dto;
+using Application.Exceptions;
 using Application.Interfaces;
 using Application.Services;
 using Domain.Entities;
@@ -93,6 +94,32 @@ namespace API.Tests
         }
 
         [Fact]
+        public void UpdateReservationOrder_WhenNotFound_ShouldThrowException()
+        {
+            // Arrange
+            var dbContext = GetInMemoryDbContext();
+            var roomAvailabilityService = new Mock<IRoomAvailabilityService>();
+            roomAvailabilityService.Setup(x => x.CheckAvailability(It.IsAny<ReservationOrderDto>()));
+            
+            var service = new ReservationOrderService(dbContext, roomAvailabilityService.Object);
+            
+            var dto = new ReservationOrderDto
+            {
+                Id = 999,
+                StartDate = DateTime.Today.AddDays(10),
+                EndDate = DateTime.Today.AddDays(12),
+                CustomerEmail = "test@example.com"
+            };
+
+            // Act & Assert
+            var exception = Assert.Throws<ReservationNotFoundException>(() => 
+                service.UpdateReservationOrder(dto)
+            );
+            
+            Assert.Contains("999", exception.Message);
+        }
+
+        [Fact]
         public void CancelReservationOrder_WithValidData_ShouldSucceed()
         {
             // Arrange
@@ -129,6 +156,28 @@ namespace API.Tests
         }
 
         [Fact]
+        public void CancelReservationOrder_WhenNotFound_ShouldThrowException()
+        {
+            // Arrange
+            var dbContext = GetInMemoryDbContext();
+            var roomAvailabilityService = new Mock<IRoomAvailabilityService>();
+            var service = new ReservationOrderService(dbContext, roomAvailabilityService.Object);
+            
+            var dto = new ReservationOrderDto
+            {
+                Id = 999,
+                CustomerEmail = "test@example.com"
+            };
+
+            // Act & Assert
+            var exception = Assert.Throws<ReservationNotFoundException>(() => 
+                service.CancelReservationOrder(dto)
+            );
+            
+            Assert.Contains("999", exception.Message);
+        }
+
+        [Fact]
         public void CreateReservationOrder_WhenRoomNotAvailable_ShouldThrowException()
         {
             // Arrange
@@ -136,7 +185,7 @@ namespace API.Tests
             var roomAvailabilityService = new Mock<IRoomAvailabilityService>();
             roomAvailabilityService
                 .Setup(x => x.CheckAvailability(It.IsAny<ReservationOrderDto>()))
-                .Throws(new Exception("Room is not available for the selected dates."));
+                .Throws(new RoomNotAvailableException());
             
             var service = new ReservationOrderService(dbContext, roomAvailabilityService.Object);
             
@@ -149,7 +198,7 @@ namespace API.Tests
             };
 
             // Act & Assert
-            var exception = Assert.Throws<Exception>(() => 
+            var exception = Assert.Throws<RoomNotAvailableException>(() => 
                 service.CreateReservationOrder(dto)
             );
             
