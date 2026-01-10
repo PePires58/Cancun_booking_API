@@ -4,11 +4,11 @@ WORKDIR /app
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY ./src/* .
-RUN dotnet restore
-RUN dotnet publish -c Release -o /app/publish
+COPY ./src/ .
+RUN dotnet restore Cancun.sln
+RUN dotnet publish API/API.csproj -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
