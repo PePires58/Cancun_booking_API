@@ -2,6 +2,7 @@ using Application.Interfaces;
 using Application.Services;
 using Infra;
 using Microsoft.EntityFrameworkCore;
+using MySql.Data.MySqlClient;
 
 namespace API.Extensions
 {
@@ -12,13 +13,15 @@ namespace API.Extensions
             // Add DbContext
             services.AddDbContext<CancunDbContext>(options =>
             {
-                var server = configuration["DB_SERVER"] ?? "localhost";
-                var database = configuration["DB_DATABASE"] ?? "cancun_db";
-                var user = configuration["DB_USER"] ?? "root";
-                var password = configuration["DB_PASSWORD"] ?? "password";
+                var builder = new MySqlConnectionStringBuilder
+                {
+                    Server = configuration["DB_SERVER"] ?? "localhost",
+                    Database = configuration["DB_DATABASE"] ?? "cancun_db",
+                    UserID = configuration["DB_USER"] ?? "root",
+                    Password = configuration["DB_PASSWORD"] ?? "password"
+                };
                 
-                var connectionString = $"Server={server};Database={database};User={user};Password={password};";
-                options.UseMySQL(connectionString);
+                options.UseMySQL(builder.ConnectionString);
             });
 
             // Add Application Services

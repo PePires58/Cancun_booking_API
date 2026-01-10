@@ -45,7 +45,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating reservation");
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { error = "An error occurred while creating the reservation. Please try again later." });
             }
         }
 
@@ -74,7 +74,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error updating reservation");
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { error = "An error occurred while updating the reservation. Please try again later." });
             }
         }
 
@@ -118,7 +118,7 @@ namespace API.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error canceling reservation");
-                return BadRequest(new { error = ex.Message });
+                return BadRequest(new { error = "An error occurred while canceling the reservation. Please try again later." });
             }
         }
     }
