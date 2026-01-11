@@ -4,9 +4,9 @@ namespace Domain.Entities
 {
     public class ReservationOrder
     {
-        private static int MinDaysAdvanceBooking => 1;
-        private static int MaxDaysAdvanceBooking => 30;
-        private static int MaxStayDays => 3;
+        public static int MinDaysAdvanceBooking => 1;
+        public static int MaxDaysAdvanceBooking => 30;
+        public static int MaxStayDays => 3;
 
         public ReservationOrder(int id, DateTime startDate, DateTime endDate, string customerEmail,
             ReservationStatus status)

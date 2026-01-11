@@ -38,9 +38,9 @@ namespace API.Tests
         [Fact]
         public void CreateReservation_WithMaximumStayDays_ShouldSucceed()
         {
-            // Arrange - Maximum stay is 3 days
+            // Arrange - Maximum stay
             var startDate = DateTime.Today.AddDays(5);
-            var endDate = startDate.AddDays(3);
+            var endDate = startDate.AddDays(ReservationOrder.MaxStayDays);
 
             // Act
             var reservation = new ReservationOrder(
@@ -52,15 +52,15 @@ namespace API.Tests
             );
 
             // Assert
-            Assert.Equal(3, reservation.StayDays);
+            Assert.Equal(ReservationOrder.MaxStayDays, reservation.StayDays);
         }
 
         [Fact]
         public void CreateReservation_ExceedingMaximumStayDays_ShouldThrowException()
         {
-            // Arrange - Stay exceeds 3 days
+            // Arrange - Stay exceeds maximum
             var startDate = DateTime.Today.AddDays(5);
-            var endDate = startDate.AddDays(4);
+            var endDate = startDate.AddDays(ReservationOrder.MaxStayDays + 1);
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
@@ -73,14 +73,14 @@ namespace API.Tests
                 )
             );
 
-            Assert.Contains("Stay duration must be between 1 and 3 days", exception.Message);
+            Assert.Contains($"Stay duration must be between 1 and {ReservationOrder.MaxStayDays} days", exception.Message);
         }
 
         [Fact]
         public void CreateReservation_WithMinimumBookingAdvance_ShouldSucceed()
         {
-            // Arrange - Minimum advance is 1 day
-            var startDate = DateTime.Today.AddDays(1);
+            // Arrange - Minimum advance
+            var startDate = DateTime.Today.AddDays(ReservationOrder.MinDaysAdvanceBooking);
             var endDate = startDate.AddDays(1);
 
             // Act
@@ -114,14 +114,14 @@ namespace API.Tests
                 )
             );
 
-            Assert.Contains("Start date must be booked between 1 and 30 days in advance", exception.Message);
+            Assert.Contains($"Start date must be booked between {ReservationOrder.MinDaysAdvanceBooking} and {ReservationOrder.MaxDaysAdvanceBooking} days in advance", exception.Message);
         }
 
         [Fact]
         public void CreateReservation_WithMaximumBookingAdvance_ShouldSucceed()
         {
-            // Arrange - Maximum advance is 30 days
-            var startDate = DateTime.Today.AddDays(30);
+            // Arrange - Maximum advance
+            var startDate = DateTime.Today.AddDays(ReservationOrder.MaxDaysAdvanceBooking);
             var endDate = startDate.AddDays(1);
 
             // Act
@@ -140,8 +140,8 @@ namespace API.Tests
         [Fact]
         public void CreateReservation_ExceedingMaximumBookingAdvance_ShouldThrowException()
         {
-            // Arrange - Booking exceeds 30 days advance
-            var startDate = DateTime.Today.AddDays(31);
+            // Arrange - Booking exceeds maximum advance
+            var startDate = DateTime.Today.AddDays(ReservationOrder.MaxDaysAdvanceBooking + 1);
             var endDate = startDate.AddDays(1);
 
             // Act & Assert
@@ -155,7 +155,7 @@ namespace API.Tests
                 )
             );
 
-            Assert.Contains("Start date must be booked between 1 and 30 days in advance", exception.Message);
+            Assert.Contains($"Start date must be booked between {ReservationOrder.MinDaysAdvanceBooking} and {ReservationOrder.MaxDaysAdvanceBooking} days in advance", exception.Message);
         }
 
         [Fact]
@@ -263,14 +263,14 @@ namespace API.Tests
             );
 
             var newStartDate = DateTime.Today.AddDays(10);
-            var newEndDate = newStartDate.AddDays(4); // Exceeds 3 days
+            var newEndDate = newStartDate.AddDays(ReservationOrder.MaxStayDays + 1);
 
             // Act & Assert
             var exception = Assert.Throws<ArgumentException>(() =>
                 reservation.UpdateDates(newStartDate, newEndDate)
             );
 
-            Assert.Contains("Stay duration must be between 1 and 3 days", exception.Message);
+            Assert.Contains($"Stay duration must be between 1 and {ReservationOrder.MaxStayDays} days", exception.Message);
         }
 
         [Fact]
