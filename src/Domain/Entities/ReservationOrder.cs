@@ -1,12 +1,13 @@
 ﻿using Domain.Enuns;
+using Domain.Exceptions;
 
 namespace Domain.Entities
 {
     public class ReservationOrder
     {
-        private static int MinDaysAdvanceBooking => 1;
-        private static int MaxDaysAdvanceBooking => 30;
-        private static int MaxStayDays => 3;
+        public static int MinDaysAdvanceBooking => 1;
+        public static int MaxDaysAdvanceBooking => 30;
+        public static int MaxStayDays => 3;
 
         public ReservationOrder(int id, DateTime startDate, DateTime endDate, string customerEmail,
             ReservationStatus status)
@@ -24,12 +25,12 @@ namespace Domain.Entities
         }
 
         public int Id { get; init; }
-        public DateTime StartDate { get; private set; }
-        public DateTime EndDate { get; private set; }
-        public string CustomerEmail { get; private set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string CustomerEmail { get; set; }
         public int StayDays => EndDate.Date.Subtract(StartDate.Date).Days;
-        public ReservationStatus Status { get; private set; }
-        public int RoomId { get; private set; }
+        public ReservationStatus Status { get; set; }
+        public int RoomId { get; set; }
 
         public void Cancel()
         {
@@ -58,6 +59,10 @@ namespace Domain.Entities
 
         public void UpdateDates(DateTime startDate, DateTime endDate)
         {
+            if (Status == ReservationStatus.Canceled ||
+                Status == ReservationStatus.Finished)
+                throw new ReservationCannotBeUpdatedException();
+
             StartDate = startDate;
             EndDate = endDate;
 

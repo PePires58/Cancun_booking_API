@@ -1,4 +1,5 @@
 ﻿using Application.Dto;
+using Application.Exceptions;
 using Application.Interfaces;
 using Infra;
 
@@ -17,7 +18,7 @@ namespace Application.Services
                     c.Status != Domain.Enuns.ReservationStatus.Canceled);
 
                 if (alreadyReserved)
-                    throw new Exception("Room is not available for the selected dates.");
+                    throw new RoomNotAvailableException();
             }
             else
             {
@@ -29,7 +30,7 @@ namespace Application.Services
                     c.Status != Domain.Enuns.ReservationStatus.Canceled);
 
                 if (alreadyReserved)
-                    throw new Exception("Room is not available for the selected dates.");
+                    throw new RoomNotAvailableException();
             }
         }
     }
