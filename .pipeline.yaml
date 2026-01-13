@@ -1,0 +1,6 @@
+dotnet:
+  version: "8.0.x"
+
+docker:
+  image: "ghcr.io/pepIres58/cancun_booking_api"
+  tag: "latest"

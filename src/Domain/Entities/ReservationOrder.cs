@@ -9,6 +9,11 @@ namespace Domain.Entities
         public static int MaxDaysAdvanceBooking => 30;
         public static int MaxStayDays => 3;
 
+        private ReservationOrder()
+        {
+            CustomerEmail = string.Empty;
+        }
+
         public ReservationOrder(int id, DateTime startDate, DateTime endDate, string customerEmail,
             ReservationStatus status)
         {

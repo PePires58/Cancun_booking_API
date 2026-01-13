@@ -13,11 +13,9 @@ Set the following environment variables or update `appsettings.json`:
 ```bash
 DB_SERVER=localhost
 DB_DATABASE=cancun_db
-DB_USER=root
+DB_USER=cancun
 DB_PASSWORD=password
 ```
-
-See `.env.example` for reference.
 
 ## Running the Application
 
@@ -35,7 +33,7 @@ docker build -t cancun-api .
 docker run -p 8080:8080 \
   -e DB_SERVER=host.docker.internal \
   -e DB_DATABASE=cancun_db \
-  -e DB_USER=root \
+  -e DB_USER=cancun \
   -e DB_PASSWORD=password \
   cancun-api
 ```
