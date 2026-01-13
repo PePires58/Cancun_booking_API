@@ -6,5 +6,5 @@ ci:
   test_path: "src"
 
 docker:
-  image: "ghcr.io/pepIres58/cancun_booking_api"
+  image: "ghcr.io/pepires58/cancun_booking_api"
   tag: "latest"
