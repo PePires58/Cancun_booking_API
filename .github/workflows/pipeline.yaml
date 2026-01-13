@@ -28,7 +28,7 @@ jobs:
         echo "DOCKER_IMAGE=$(yq '.docker.image' .pipeline.yaml)" >> $GITHUB_ENV
         echo "DOCKER_TAG=$(yq '.docker.tag' .pipeline.yaml)-${GITHUB_REF##*/}" >> $GITHUB_ENV
         echo "BUILD_PATH=$(yq '.ci.build_path' .pipeline.yaml)" >> $GITHUB_ENV
-        echo "TEST_PATH=$(yq '.ci.test_path' .pipeline.yaml)" >> $
+        echo "TEST_PATH=$(yq '.ci.test_path' .pipeline.yaml)" >> $GITHUB_ENV
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
