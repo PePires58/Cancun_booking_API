@@ -6,6 +6,7 @@ namespace Infra
 {
     public class CancunDbContext : DbContext
     {
+
         public CancunDbContext(DbContextOptions<CancunDbContext> options) : base(options) { }
 
         public DbSet<ReservationOrder> ReservationOrders { get; set; }

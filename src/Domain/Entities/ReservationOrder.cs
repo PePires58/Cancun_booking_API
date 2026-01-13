@@ -58,6 +58,10 @@ namespace Domain.Entities
 
         public void UpdateDates(DateTime startDate, DateTime endDate)
         {
+            if (Status == ReservationStatus.Canceled ||
+                Status == ReservationStatus.Finished)
+                throw new InvalidOperationException("The reservation can not be updated because it is finished or canceled");
+
             StartDate = startDate;
             EndDate = endDate;
 

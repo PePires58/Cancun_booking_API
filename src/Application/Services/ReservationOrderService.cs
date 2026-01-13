@@ -17,6 +17,8 @@ namespace Application.Services
 
             _dbContext.ReservationOrders.Add(reservation);
             _dbContext.SaveChanges();
+
+            orderDto.Id = reservation.Id;
         }
 
         public void UpdateReservationOrder(ReservationOrderDto orderDto)
@@ -25,10 +27,7 @@ namespace Application.Services
 
             ReservationOrder? reservation = _dbContext.ReservationOrders
                 .FirstOrDefault(c => c.Id == orderDto.Id
-                && c.CustomerEmail == orderDto.CustomerEmail);
-
-            if (reservation == null)
-                throw new ReservationNotFoundException(orderDto.Id);
+                && c.CustomerEmail == orderDto.CustomerEmail) ?? throw new ReservationNotFoundException(orderDto.Id);
 
             reservation.UpdateDates(orderDto.StartDate, orderDto.EndDate);
             _dbContext.SaveChanges();
@@ -38,10 +37,7 @@ namespace Application.Services
         {
             ReservationOrder? reservation = _dbContext.ReservationOrders
                 .FirstOrDefault(c => c.Id == orderDto.Id 
-                && c.CustomerEmail == orderDto.CustomerEmail);
-
-            if (reservation == null)
-                throw new ReservationNotFoundException(orderDto.Id);
+                && c.CustomerEmail == orderDto.CustomerEmail) ?? throw new ReservationNotFoundException(orderDto.Id);
 
             reservation.Cancel();
             _dbContext.SaveChanges();

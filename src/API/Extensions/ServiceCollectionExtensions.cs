@@ -10,21 +10,19 @@ namespace API.Extensions
     {
         public static IServiceCollection AddCancunServices(this IServiceCollection services, IConfiguration configuration)
         {
-            // Add DbContext
             services.AddDbContext<CancunDbContext>(options =>
             {
                 var builder = new MySqlConnectionStringBuilder
                 {
                     Server = configuration["DB_SERVER"] ?? "localhost",
                     Database = configuration["DB_DATABASE"] ?? "cancun_db",
-                    UserID = configuration["DB_USER"] ?? "root",
+                    UserID = configuration["DB_USER"] ?? "cancun",
                     Password = configuration["DB_PASSWORD"] ?? "password"
                 };
                 
                 options.UseMySQL(builder.ConnectionString);
             });
 
-            // Add Application Services
             services.AddScoped<ReservationOrderService>();
             services.AddScoped<IRoomAvailabilityService, RoomAvailabilityService>();
 
