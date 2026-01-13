@@ -27,6 +27,8 @@ jobs:
         echo "DOTNET_VERSION=$(yq '.dotnet.version' .pipeline.yaml)" >> $GITHUB_ENV
         echo "DOCKER_IMAGE=$(yq '.docker.image' .pipeline.yaml)" >> $GITHUB_ENV
         echo "DOCKER_TAG=$(yq '.docker.tag' .pipeline.yaml)-${GITHUB_REF##*/}" >> $GITHUB_ENV
+        echo "BUILD_PATH=$(yq '.ci.build_path' .pipeline.yaml)" >> $GITHUB_ENV
+        echo "TEST_PATH=$(yq '.ci.test_path' .pipeline.yaml)" >> $
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -34,13 +36,13 @@ jobs:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
     - name: Restore
-      run: dotnet restore
+      run: cd ${{ env.BUILD_PATH }} && dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore
+      run: cd ${{ env.BUILD_PATH }} && dotnet build --no-restore
 
     - name: Test
-      run: dotnet test --no-build
+      run: cd ${{ env.TEST_PATH }} && dotnet test --no-build
 
     - name: Login GHCR
       uses: docker/login-action@v3

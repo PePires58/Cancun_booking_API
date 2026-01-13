@@ -1,6 +1,10 @@
 dotnet:
   version: "8.0.x"
 
+ci:
+  build_path: "src"
+  test_path: "src"
+
 docker:
   image: "ghcr.io/pepIres58/cancun_booking_api"
   tag: "latest"
