@@ -48,11 +48,6 @@ namespace API.Controllers
                 _logger.LogWarning("Room not available: {Message}", ex.Message);
                 return BadRequest(new { error = ex.Message });
             }
-            catch (InvalidReservationException ex)
-            {
-                _logger.LogWarning("Invalid reservation: {Message}", ex.Message);
-                return BadRequest(new { error = ex.Message });
-            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error creating reservation");
