@@ -6,7 +6,7 @@ using Domain.Enuns;
 using Infra;
 using Microsoft.EntityFrameworkCore;
 
-namespace API.Tests
+namespace Tests
 {
     public class RoomAvailabilityServiceTests
     {

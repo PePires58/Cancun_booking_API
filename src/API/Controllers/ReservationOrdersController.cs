@@ -2,6 +2,7 @@ using Application.Dto;
 using Application.Exceptions;
 using Application.Services;
 using Domain.Enuns;
+using Domain.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -94,9 +95,9 @@ namespace API.Controllers
                 _logger.LogWarning("Room not available: {Message}", ex.Message);
                 return BadRequest(new { error = ex.Message });
             }
-            catch (InvalidReservationException ex)
+            catch (ReservationCannotBeUpdatedException ex)
             {
-                _logger.LogWarning("Invalid reservation: {Message}", ex.Message);
+                _logger.LogWarning("Reservation cannot be updated: {Message}", ex.Message);
                 return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)

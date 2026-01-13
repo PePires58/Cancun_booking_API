@@ -1,4 +1,5 @@
 ﻿using Domain.Enuns;
+using Domain.Exceptions;
 
 namespace Domain.Entities
 {
@@ -60,7 +61,7 @@ namespace Domain.Entities
         {
             if (Status == ReservationStatus.Canceled ||
                 Status == ReservationStatus.Finished)
-                throw new InvalidOperationException("The reservation can not be updated because it is finished or canceled");
+                throw new ReservationCannotBeUpdatedException();
 
             StartDate = startDate;
             EndDate = endDate;

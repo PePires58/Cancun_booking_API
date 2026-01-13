@@ -8,7 +8,7 @@ using Infra;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 
-namespace API.Tests
+namespace Tests
 {
     public class ReservationOrderServiceTests
     {

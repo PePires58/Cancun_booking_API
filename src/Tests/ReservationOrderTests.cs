@@ -1,8 +1,9 @@
 using Application.Dto;
 using Domain.Entities;
 using Domain.Enuns;
+using Domain.Exceptions;
 
-namespace API.Tests
+namespace Tests
 {
     /// <summary>
     /// Tests for reservation booking rules based on README.md requirements:
@@ -271,6 +272,56 @@ namespace API.Tests
             );
 
             Assert.Contains($"Stay duration must be between 1 and {ReservationOrder.MaxStayDays} days", exception.Message);
+        }
+
+        [Fact]
+        public void UpdateReservationDates_WhenCanceled_ShouldThrowException()
+        {
+            // Arrange
+            var startDate = DateTime.Today.AddDays(5);
+            var endDate = startDate.AddDays(2);
+            var reservation = new ReservationOrder(
+                id: 1,
+                startDate: startDate,
+                endDate: endDate,
+                customerEmail: "test@example.com",
+                status: ReservationStatus.Canceled
+            );
+
+            var newStartDate = DateTime.Today.AddDays(10);
+            var newEndDate = newStartDate.AddDays(2);
+
+            // Act & Assert
+            var exception = Assert.Throws<ReservationCannotBeUpdatedException>(() =>
+                reservation.UpdateDates(newStartDate, newEndDate)
+            );
+
+            Assert.Contains("cannot be updated because it is finished or canceled", exception.Message);
+        }
+
+        [Fact]
+        public void UpdateReservationDates_WhenFinished_ShouldThrowException()
+        {
+            // Arrange
+            var startDate = DateTime.Today.AddDays(5);
+            var endDate = startDate.AddDays(2);
+            var reservation = new ReservationOrder(
+                id: 1,
+                startDate: startDate,
+                endDate: endDate,
+                customerEmail: "test@example.com",
+                status: ReservationStatus.Finished
+            );
+
+            var newStartDate = DateTime.Today.AddDays(10);
+            var newEndDate = newStartDate.AddDays(2);
+
+            // Act & Assert
+            var exception = Assert.Throws<ReservationCannotBeUpdatedException>(() =>
+                reservation.UpdateDates(newStartDate, newEndDate)
+            );
+
+            Assert.Contains("cannot be updated because it is finished or canceled", exception.Message);
         }
 
         [Fact]
