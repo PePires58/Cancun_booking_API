@@ -1,0 +1,59 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/**, feature-** ]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-test-publish:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Install yq
+      run: |
+        sudo wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 \
+          -O /usr/bin/yq
+        sudo chmod +x /usr/bin/yq
+
+    - name: Load pipeline config
+      run: |
+        echo "DOTNET_VERSION=$(yq '.dotnet.version' .pipeline.yaml)" >> $GITHUB_ENV
+        echo "DOCKER_IMAGE=$(yq '.docker.image' .pipeline.yaml)" >> $GITHUB_ENV
+        echo "DOCKER_TAG=$(yq '.docker.tag' .pipeline.yaml)-${GITHUB_REF##*/}" >> $GITHUB_ENV
+        echo "BUILD_PATH=$(yq '.ci.build_path' .pipeline.yaml)" >> $GITHUB_ENV
+        echo "TEST_PATH=$(yq '.ci.test_path' .pipeline.yaml)" >> $GITHUB_ENV
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ env.DOTNET_VERSION }}
+
+    - name: Restore
+      run: cd ${{ env.BUILD_PATH }} && dotnet restore
+
+    - name: Build
+      run: cd ${{ env.BUILD_PATH }} && dotnet build --no-restore
+
+    - name: Test
+      run: cd ${{ env.TEST_PATH }} && dotnet test --no-build
+
+    - name: Login GHCR
+      uses: docker/login-action@v3
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Build and push Docker image
+      if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+      run: |
+        docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+        docker push $DOCKER_IMAGE:$DOCKER_TAG
