@@ -1,8 +1,0 @@
-services:
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: cancun-api:local
-    environment:
-      ASPNETCORE_ENVIRONMENT: Development
