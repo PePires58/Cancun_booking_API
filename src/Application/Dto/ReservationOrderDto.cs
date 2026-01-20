@@ -15,7 +15,24 @@ namespace Application.Dto
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public string CustomerEmail { get; set; } = string.Empty;
-        public int RoomId { get; set; }
+
+        private int _roomId;
+        public int RoomId
+        {
+            get
+            {
+                if (_roomId <= 0)
+                    _roomId = 1;
+                return _roomId;
+            }
+            set
+            {
+                if (value <= 0)
+                    _roomId = 1;
+                else
+                    _roomId = value;
+            }
+        }
         public ReservationStatus Status { get; set; }
 
         public ReservationOrder MapToEntity()
